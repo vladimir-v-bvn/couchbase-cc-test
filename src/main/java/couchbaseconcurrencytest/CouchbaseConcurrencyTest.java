@@ -26,6 +26,7 @@ public class CouchbaseConcurrencyTest {
   static char[] password;
   static String bucketName;
 
+  private static Cluster cluster = null;
   private static Bucket bucket = null;
 
   private static int numberOfTreads;
@@ -67,14 +68,19 @@ public class CouchbaseConcurrencyTest {
         isKeepRunning = false;
         service.shutdown();
         try {
+          Thread.sleep(1000);
+        } catch (InterruptedException e) {
+          System.err.println("scheduledService thread can't sleep.");
+        }
+        cluster.disconnect();
+        try {
           if (!service.awaitTermination(1, TimeUnit.SECONDS)) {
             service.shutdownNow();
             if (!service.awaitTermination(1, TimeUnit.SECONDS))
               System.err.println("Service not terminated.");
+              Thread.currentThread().interrupt();
             }
         } catch (InterruptedException ex) {
-          service.shutdownNow();
-          Thread.currentThread().interrupt();
           System.exit(1);
         }
       }
@@ -132,7 +138,7 @@ public class CouchbaseConcurrencyTest {
   
   private static void connectToCouchbase() {
     try {
-      Cluster cluster = Cluster.connect(connectionString, userName, String.valueOf(password));
+      cluster = Cluster.connect(connectionString, userName, String.valueOf(password));
       bucket = cluster.bucket(bucketName);
       bucket.waitUntilReady(Duration.parse("PT10S"));
     } catch (Exception ex) {
