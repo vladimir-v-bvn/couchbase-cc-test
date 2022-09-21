@@ -66,6 +66,11 @@ public class CouchbaseConcurrencyTest {
     scheduledService.schedule(new Runnable(){
       public void run(){
         isKeepRunning = false;
+        try {
+          Thread.sleep(1000);
+        } catch (InterruptedException e) {
+          System.err.println("scheduledService thread can't sleep.");
+        }
         service.shutdown();
         try {
           Thread.sleep(1000);
@@ -78,9 +83,9 @@ public class CouchbaseConcurrencyTest {
             service.shutdownNow();
             if (!service.awaitTermination(1, TimeUnit.SECONDS))
               System.err.println("Service not terminated.");
-              Thread.currentThread().interrupt();
+              Thread.currentThread().interrupt(); //scheduledService interrupted
             }
-        } catch (InterruptedException ex) {
+        } catch (InterruptedException e) {
           System.exit(1);
         }
       }
@@ -118,9 +123,9 @@ public class CouchbaseConcurrencyTest {
       bucketName = prop.getProperty("bucketName");
       numberOfTreads = Integer.parseInt(prop.getProperty("numberOfTreads"));
       jsonFile = prop.getProperty("jsonFile");
-    } catch (IOException ex) {
+    } catch (IOException e) {
       System.out.println("can't read properties");
-      ex.printStackTrace();
+      e.printStackTrace();
       System.exit(1);
     }
   }
@@ -139,6 +144,7 @@ public class CouchbaseConcurrencyTest {
   private static void connectToCouchbase() {
     try {
       cluster = Cluster.connect(connectionString, userName, String.valueOf(password));
+      password = null;
       bucket = cluster.bucket(bucketName);
       bucket.waitUntilReady(Duration.parse("PT10S"));
     } catch (Exception ex) {
@@ -151,9 +157,11 @@ public class CouchbaseConcurrencyTest {
   private static void printPerformanceTestResults() {
     
     try {
-      Thread.sleep(testTimeSeconds*1000 + 5*1000);
+      Thread.sleep(testTimeSeconds*1000 + 1*1000);
     } catch (InterruptedException e) {
       System.err.println("Main thread can't sleep.");
+      e.printStackTrace();
+      System.exit(1);
     }
     
     int perfomanceResultCounterInt = (int)perfomanceResultCounter.sum();

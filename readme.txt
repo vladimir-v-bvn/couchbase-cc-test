@@ -27,7 +27,7 @@ To prevent modification of UUID by other threads during the test
 UUID is made ThreadLocal, which is non-blocking as well. 
 
 Results of the test:
-The test was run on my Core i5 notebook with 4 cores. No warm up procedures was done.
+The test was run on my Core i5 notebook with 4 cores. No warm up procedures were done.
 Some databases, messaging servers and so on are running on the notebook in the background.
 Couchbase runs on the same notebook as well.
 So, the results of the test are more or less irrelevant.
