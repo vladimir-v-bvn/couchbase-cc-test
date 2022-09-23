@@ -95,8 +95,8 @@ public class CouchbaseConcurrencyTest {
   
   private static void runTest() {
 
+    ThreadLocal<String> uuid = new ThreadLocal<>();
     while(isKeepRunning) {
-      ThreadLocal<String> uuid = new ThreadLocal<>();
       uuid.set(UUID.randomUUID().toString()); 
       perfomanceResultCounter.increment();
       //write test
@@ -147,9 +147,9 @@ public class CouchbaseConcurrencyTest {
       password = null;
       bucket = cluster.bucket(bucketName);
       bucket.waitUntilReady(Duration.parse("PT10S"));
-    } catch (Exception ex) {
+    } catch (Exception e) {
       System.out.println("can't connect to Couchbase");
-      ex.printStackTrace();
+      e.printStackTrace();
       System.exit(1);
     }
   }  
