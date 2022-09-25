@@ -1,4 +1,4 @@
-package couchbaseconcurrencytest;
+package com.vber.couchbaseconcurrencytest;
 
 import java.io.FileInputStream;
 import java.io.FileReader;
@@ -18,6 +18,9 @@ import org.json.simple.parser.JSONParser;
 
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.Cluster;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 public class CouchbaseConcurrencyTest {
 
@@ -39,6 +42,8 @@ public class CouchbaseConcurrencyTest {
   private static LongAdder perfomanceResultCounter = new LongAdder();
   private static LongAdder perfomanceResultWriteTime = new LongAdder();
   private static LongAdder perfomanceResultRead3Time = new LongAdder();
+  
+  private static Logger logger = LogManager.getLogger(CouchbaseConcurrencyTest.class);
   
   public static void main(String[] args) {
 
@@ -69,20 +74,29 @@ public class CouchbaseConcurrencyTest {
         try {
           Thread.sleep(1000);
         } catch (InterruptedException e) {
-          System.err.println("scheduledService thread can't sleep.");
+          logger.error("scheduledService thread can't sleep.");
+          e.printStackTrace();
         }
         service.shutdown();
         try {
           Thread.sleep(1000);
         } catch (InterruptedException e) {
-          System.err.println("scheduledService thread can't sleep.");
+          logger.error("scheduledService thread can't sleep.");
+          e.printStackTrace();
         }
-        cluster.disconnect();
+        try {
+          cluster.disconnect();
+        } catch (Exception e) {
+          logger.error("Couchbase cluster can't disconnect.");
+          e.printStackTrace();
+        } finally {
+          cluster.disconnect();
+        }
         try {
           if (!service.awaitTermination(1, TimeUnit.SECONDS)) {
             service.shutdownNow();
             if (!service.awaitTermination(1, TimeUnit.SECONDS))
-              System.err.println("Service not terminated.");
+              logger.error("newFixedThreadPool Service not terminated.");
               Thread.currentThread().interrupt(); //scheduledService interrupted
             }
         } catch (InterruptedException e) {
@@ -124,7 +138,7 @@ public class CouchbaseConcurrencyTest {
       numberOfTreads = Integer.parseInt(prop.getProperty("numberOfTreads"));
       jsonFile = prop.getProperty("jsonFile");
     } catch (IOException e) {
-      System.out.println("can't read properties");
+      logger.error("can't read properties");
       e.printStackTrace();
       System.exit(1);
     }
@@ -135,7 +149,7 @@ public class CouchbaseConcurrencyTest {
     try (FileReader reader = new FileReader(jsonFile)) {
       jsonObject = (JSONObject)jsonParser.parse(reader);
     } catch (Exception e) {
-      System.out.println("Can't read or parse JSON file");
+      logger.error("Can't read or parse JSON file");
       e.printStackTrace();
       System.exit(1);
     }
@@ -148,7 +162,7 @@ public class CouchbaseConcurrencyTest {
       bucket = cluster.bucket(bucketName);
       bucket.waitUntilReady(Duration.parse("PT10S"));
     } catch (Exception e) {
-      System.out.println("can't connect to Couchbase");
+      logger.error("can't connect to Couchbase");
       e.printStackTrace();
       System.exit(1);
     }
@@ -157,9 +171,9 @@ public class CouchbaseConcurrencyTest {
   private static void printPerformanceTestResults() {
     
     try {
-      Thread.sleep(testTimeSeconds*1000 + 1*1000);
+      Thread.sleep(testTimeSeconds*1000 + 3*1000);
     } catch (InterruptedException e) {
-      System.err.println("Main thread can't sleep.");
+      logger.error("Main thread can't sleep.");
       e.printStackTrace();
       System.exit(1);
     }

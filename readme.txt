@@ -1,6 +1,6 @@
 A multithreading Couchbase performance test where nothing is blocked.
 
-The project compiled with Java 17.
+The project is compiled with Java 17.
 
 Set up:
   readProperties() - reads properties

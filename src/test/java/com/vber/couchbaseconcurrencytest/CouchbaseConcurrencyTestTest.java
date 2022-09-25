@@ -1,7 +1,7 @@
 /**
  * 
  */
-package couchbaseconcurrencytest;
+package com.vber.couchbaseconcurrencytest;
 
 import org.junit.After;
 import org.junit.AfterClass;
