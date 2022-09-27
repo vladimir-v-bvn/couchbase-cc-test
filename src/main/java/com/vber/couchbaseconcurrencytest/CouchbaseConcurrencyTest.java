@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
@@ -185,7 +186,7 @@ public class CouchbaseConcurrencyTest {
   }
 
   /**
-   * readProperties() is a self-documented method, it performs exactly according his name. 
+   * private readProperties() is a self-documented method, it performs exactly according his name. 
    */
   private static void readProperties() {
     try (InputStream inputStream = new FileInputStream("config.properties")) {
@@ -205,7 +206,7 @@ public class CouchbaseConcurrencyTest {
   }
 
   /**
-   * readJsonObjectFromFile() is a self-documented method, it performs exactly according his name. 
+   * private readJsonObjectFromFile() is a self-documented method, it performs exactly according his name. 
    */
   private static void readJsonObjectFromFile() {
     JSONParser jsonParser = new JSONParser();
@@ -219,11 +220,12 @@ public class CouchbaseConcurrencyTest {
   }
   
   /**
-   * connectToCouchbase() is a self-documented method, it performs exactly according his name. 
+   * private connectToCouchbase() is a self-documented method, it performs exactly according his name. 
    */
   private static void connectToCouchbase() {
     try {
       cluster = Cluster.connect(connectionString, userName, String.valueOf(password));
+      Arrays.fill(password, '*');
       password = null;
       bucket = cluster.bucket(bucketName);
       bucket.waitUntilReady(Duration.parse("PT10S"));
