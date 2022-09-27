@@ -1,1 +1,1 @@
-typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"com.vber.couchbaseconcurrencytest","l":"CouchbaseConcurrencyTest"}];updateSearchResults();
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"com.vber.couchbaseconcurrencytest","l":"CouchbaseConcurrencyTest"},{"p":"com.vber.couchbaseconcurrencytest","l":"CouchbaseConcurrencyTestTest"}];updateSearchResults();
