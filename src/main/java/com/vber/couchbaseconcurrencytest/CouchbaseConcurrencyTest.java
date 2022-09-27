@@ -22,6 +22,35 @@ import com.couchbase.client.java.Cluster;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
+/**
+ *
+ * @author vber
+ * <p>
+ * A multithreading Couchbase performance test where nothing is blocked.
+ * <p>
+ * Set up:<br>
+ * readProperties() - reads properties<br>
+ * readJsonObjectFromFile() - reads JSON object from file <br>
+ * connectToCouchbase() - connects to Couchbase <br>
+ * <p>
+ * The test: <br>
+ * The number of threads is set as command line argument (currently commented) or in the main method. <br>
+ * runTest() method is implemented like while() cycle controlled by isKeepRunning boolean variable. <br>
+ * ExecutorService is started as Executors.newFixedThreadPool(numberOfTreads) <br>
+ * and runnable task runTest() is submitted numberOfTreads times. <br>
+ * At the same time SingleThreadScheduledExecutor is started to stop ExecutorService <br>
+ * after 3 minutes and to set isKeepRunning to false to stop runTest(). <br>
+ * As the last step collected performance data are printed. <br>
+ * <p>
+ * Non-blocking multithreading implementation: <br>
+ * Performance data are collected to non-blocking LongAdder variables. <br>
+ * startTime and finishTime of tests are written as they are, <br>
+ * test time i.e. (finishTime - startTime) is calculated after the tests as LongAdder.sum(), <br>
+ * startTime is written as (-1)*startTime. <br>
+ * Generated random UUID is used as a key of Couchbase documents. <br>
+ * To prevent modification of UUID by other threads during the test <br>
+ * UUID is made ThreadLocal, which is non-blocking as well. <br>
+ */
 public class CouchbaseConcurrencyTest {
 
   static String connectionString;
@@ -45,6 +74,17 @@ public class CouchbaseConcurrencyTest {
   
   private static Logger logger = LogManager.getLogger(CouchbaseConcurrencyTest.class);
   
+  /**
+   * 
+   * @param args
+   * 
+   * args[0] is numberOfTreads (currently commented)
+   * <p>
+   * The method<br>
+   *            (1) sets up the environment<br>
+   *            (2) starts the main routine startExecutorService()<br>
+   *            (3) prints performance test results.<br>
+   */
   public static void main(String[] args) {
 
     readProperties();
@@ -60,6 +100,19 @@ public class CouchbaseConcurrencyTest {
     
   }
 
+  /**
+   * 
+   * @param 
+   * <b>Runnable task</b> is runTest() method <br>
+   * <b>int numberOfTreads</b> is number of treads used in the test <br>
+   * <p>
+   * ExecutorService is started as Executors.newFixedThreadPool(numberOfTreads) <br>
+   * and runnable task runTest() is submited numberOfTreads times.<br>
+   * At the same time SingleThreadScheduledExecutor is started <br>
+   * to stop ExecutorService after 3 minutes, <br>
+   * to set isKeepRunning to false to stop runTest() <br>
+   * and to disconnect from Couchbase.
+   */
   private static void startExecutorService(Runnable task, int numberOfTreads) {
 
     ExecutorService service = Executors.newFixedThreadPool(numberOfTreads);
@@ -107,6 +160,10 @@ public class CouchbaseConcurrencyTest {
 
   }
   
+  /**
+   * runTest() method is the test itself. <br>
+   * It is implemented like while() cycle controlled by isKeepRunning boolean variable.
+   */
   private static void runTest() {
 
     ThreadLocal<String> uuid = new ThreadLocal<>();
@@ -127,6 +184,9 @@ public class CouchbaseConcurrencyTest {
 
   }
 
+  /**
+   * readProperties() is a self-documented method, it performs exactly according his name. 
+   */
   private static void readProperties() {
     try (InputStream inputStream = new FileInputStream("config.properties")) {
       Properties prop = new Properties();
@@ -144,6 +204,9 @@ public class CouchbaseConcurrencyTest {
     }
   }
 
+  /**
+   * readJsonObjectFromFile() is a self-documented method, it performs exactly according his name. 
+   */
   private static void readJsonObjectFromFile() {
     JSONParser jsonParser = new JSONParser();
     try (FileReader reader = new FileReader(jsonFile)) {
@@ -155,6 +218,9 @@ public class CouchbaseConcurrencyTest {
     }
   }
   
+  /**
+   * connectToCouchbase() is a self-documented method, it performs exactly according his name. 
+   */
   private static void connectToCouchbase() {
     try {
       cluster = Cluster.connect(connectionString, userName, String.valueOf(password));
@@ -168,6 +234,12 @@ public class CouchbaseConcurrencyTest {
     }
   }  
 
+  /**
+   * printPerformanceTestResults() waits (test time) in seconds to finish the test <br>
+   * plus additional 3 seconds to close pools and disconnect from Couchbase, <br>
+   * then calculates counters accumulated in LongAdder variables <br>
+   * and then prints results of the test. 
+   */
   private static void printPerformanceTestResults() {
     
     try {

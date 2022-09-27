@@ -1,0 +1,1 @@
+memberSearchIndex = [{"p":"com.vber.couchbaseconcurrencytest","c":"CouchbaseConcurrencyTest","l":"CouchbaseConcurrencyTest()","u":"%3Cinit%3E()"},{"p":"com.vber.couchbaseconcurrencytest","c":"CouchbaseConcurrencyTest","l":"main(String[])","u":"main(java.lang.String[])"}];updateSearchResults();

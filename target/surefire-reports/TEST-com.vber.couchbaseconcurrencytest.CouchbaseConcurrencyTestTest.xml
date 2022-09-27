@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="1" failures="0" name="com.vber.couchbaseconcurrencytest.CouchbaseConcurrencyTestTest" time="0.021" errors="0" skipped="0">
+<testsuite tests="1" failures="0" name="com.vber.couchbaseconcurrencytest.CouchbaseConcurrencyTestTest" time="0.029" errors="0" skipped="0">
   <properties>
     <property name="jansi.mode" value="strip"/>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
@@ -26,7 +26,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="user.variant" value=""/>
     <property name="os.name" value="Windows 10"/>
-    <property name="classworlds.conf" value="C:\java\eclipse-workspace\.metadata\.plugins\org.eclipse.m2e.launching\launches\m2conf7005257293530250325.tmp"/>
+    <property name="classworlds.conf" value="C:\java\eclipse-workspace\.metadata\.plugins\org.eclipse.m2e.launching\launches\m2conf6167751304903035049.tmp"/>
     <property name="sun.jnu.encoding" value="Cp1251"/>
     <property name="java.library.path" value="C:\java\jdk-17.0.2\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:/java/jdk-17.0.2/bin/server;C:/java/jdk-17.0.2/bin;C:\oracle_inst\bin;C:\Python39\Scripts\;C:\Python39\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files\Microsoft VS Code\bin;C:\Program Files\nodejs\;C:\ProgramData\chocolatey\bin;%JAVA_HOME%\bin;C:\Program Files\Git\cmd;C:\Program Files\dotnet\;C:\Program Files (x86)\dotnet\;C:\Program Files\MySQL\MySQL Shell 8.0\bin\;C:\Users\vber\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Users\vber\AppData\Roaming\npm;C:\Program Files\heroku\bin;C:\Program Files (x86)\GitHub CLI\;C:\Users\vber\AppData\Local\GitHubDesktop\bin;;C:\WINDOWS\system32;;."/>
     <property name="jdk.debug" value="release"/>
@@ -36,7 +36,7 @@
     <property name="os.version" value="10.0"/>
     <property name="user.home" value="C:\Users\vber"/>
     <property name="user.timezone" value="Europe/Moscow"/>
-    <property name="file.encoding" value="Cp1251"/>
+    <property name="file.encoding" value="UTF-8"/>
     <property name="java.specification.version" value="17"/>
     <property name="user.name" value="vber"/>
     <property name="java.class.path" value="C:\Users\vber\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_1.18.3.20220227-1319\jars\plexus-classworlds-2.6.0.jar"/>
@@ -58,5 +58,5 @@
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="com.vber.couchbaseconcurrencytest.CouchbaseConcurrencyTestTest" name="testMain" time="0.021"/>
+  <testcase classname="com.vber.couchbaseconcurrencytest.CouchbaseConcurrencyTestTest" name="testMain" time="0.029"/>
 </testsuite>

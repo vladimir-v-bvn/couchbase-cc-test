@@ -13,7 +13,7 @@ Runnable task is created from the runTest() method.
 runTest() method is implemented like while() cycle controlled by isKeepRunning boolean variable.
 ExecutorService is started as Executors.newFixedThreadPool(numberOfTreads)
 and runnable task runTest() is submited numberOfTreads times.
-At the same time SingleThreadScheduledExecutor started to stop ExecutorService
+At the same time SingleThreadScheduledExecutor is started to stop ExecutorService
 after 3 minutes and to set isKeepRunning to false to stop runTest(). 
 As the last step collected performance data are printed.
 
